@@ -36,3 +36,14 @@ print(float(number) + int(height))
 # boolean, true or false. Works same as in other languages
 smart = False
 print("\nHave your peers judged you too be smart? The answer is " + str(smart))
+
+# Multiple assignments
+# These two result in the same thing
+# name2 = "Shig"
+# height2 = 755
+# happy = True
+
+name2, height2, happy = "Shig", 755, True
+print(name2)
+print(height2)
+print(happy)
