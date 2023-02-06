@@ -47,3 +47,9 @@ name2, height2, happy = "Shig", 755, True
 print(name2)
 print(height2)
 print(happy)
+
+# If the variables all have the same values then the syntax goes like so
+Biff = Bort = Dilk = 71
+print("Biff's age is " + str(Biff))
+print("Bort's age is " + str(Bort))
+print("Dilk's age is " + str(Dilk))
