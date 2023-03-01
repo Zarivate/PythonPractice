@@ -17,8 +17,17 @@ canvas.create_rectangle(50,50,250,250, fill='green', outline='blue')
 polygon_points = [250,0,500,500,0,500]
 canvas.create_polygon(polygon_points, fill='yellow', outline='black', width=3)
 
-# What is being set with the coordinates is actually how much space the arc should take up
-canvas.create_arc(0, 0, 500, 500)
+# What is being set with the coordinates is actually how much space the arc should take up. Can also adjust the styles
+# to change what is drawn on canvas. From a normal curved line to something more angular
+canvas.create_arc(0, 0, 500, 500, style=CHORD, start=270, width=5, extent=180 )
+
+# Pokeball example
+# Top half
+canvas.create_arc(0,0,500,500, fill='red', extent=180, width=7)
+# Bottom half
+canvas.create_arc(0,0,500,500, fill='white', extent=180, start=180 , width=7)
+# Inner circle
+canvas.create_oval(190,190,310,310, fill='white', width=7)
 canvas.pack()
 
 window.mainloop()
