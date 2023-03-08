@@ -5,11 +5,14 @@ from tkinter.messagebox import *
 from tkinter.filedialog import *
 
 def change_color():
-    pass
+    # Color variable holds a tuple, only one of the variables is needed however so how to get correct index
+    color = colorchooser.askcolor(title='Pick a color or die')
+    text_area.config(fg=color[1])
+
 
 # Because a lot more things are needed to change the font a variety of arguments is what's taken
 def change_font(*args):
-    pass
+    text_area.config(font=(font_name.get(), size_box.get()))
 
 def new_file():
     pass
@@ -68,5 +71,32 @@ window.grid_columnconfigure(0, weight=1)
 # This is so text area takes up most of the window, should also automatically go to next line once reaches end of
 # width of box unless window is resized
 text_area.grid(sticky=N + E + S + W)
+# Makes it so window automatically scrolls down when user hits bottom of window
+scroll_bar.pack(side=RIGHT, fill=Y)
+text_area.config(yscrollcommand=scroll_bar.set)
+
+# Frame to hold extra widgets
+frame = Frame(window)
+frame.grid()
+
+color_button = Button(frame, text='color', command=change_color)
+color_button.grid(row=0, column=0)
+
+# In order to get all possible fonts, can use families() function on *font/all the fonts. Will return all the
+# different fonts available
+font_box = OptionMenu(frame, font_name, *font.families(), command=change_font)
+font_box.grid(row=0, column=1)
+
+# When the spinbox is used and the change_font() command is called, the font_size is what will be passed in.
+# It is why the change_font() function takes a varied amount of arguments
+size_box = Spinbox(frame, from_=1, to=100, textvariable=font_size, command=change_font)
+size_box.grid(row=0, column=2)
+
+# Menubar section that holds a cascading option list for the user
+menu_bar = Menu(window)
+window.config(menu=menu_bar)
+
+file_menu = Menu(menu_bar, tearoff=0)
+menu_bar.add_cascade()
 
 window.mainloop()
