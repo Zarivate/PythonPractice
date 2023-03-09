@@ -14,29 +14,69 @@ def change_color():
 def change_font(*args):
     text_area.config(font=(font_name.get(), size_box.get()))
 
+
+# Mimics creation of a new window by resetting the title of the window alongside any written text
 def new_file():
-    pass
+    window.title("Undefined")
+    # Delete all the text within the file from the start to the very end
+    text_area.delete(1.0, END)
 
 def open_file():
-    pass
+    file = askopenfilename(defaultextension=".txt", file=[("All Files", "*.*"), ("Text Documents", "*.txt")])
+
+    try:
+        window.title(os.path.basename(file))
+        text_area.delete(1.0, END)
+
+        file = open(file, 'r')
+        text_area.insert(1.0, file.read())
+    except Exception:
+        print("Couldn't read file, sorry.")
+
+    finally:
+        file.close()
 
 def save_file():
-    pass
+    file = filedialog.asksaveasfilename(initialfile="bingus.txt",
+                                        defaultextension=".txt",
+                                        filetypes=[("All Files", "*.*"), ("Text Documents", "*.txt")])
+
+    # If user closes out of filedialog, just return
+    if file is None:
+        return
+
+    else:
+        try:
+            window.title(os.path.basename(file))
+            file = open(file, "w")
+
+            file.write(text_area.get(1.0, END))
+
+        # Better to specify exceptions instead of using a general one but for now this is fine
+        except Exception:
+            print("Something went wrong and file couldn't be saved.")
+
+        finally:
+            file.close()
 
 def cut():
-    pass
+    text_area.event_generate("<<Cut>>")
 
 def copy():
-    pass
+    text_area.event_generate("<<Copy>>")
 
+# Mimics paste command
 def paste():
-    pass
+    text_area.event_generate("<<Paste>>")
 
+# A simple pop up given information about the program itself
 def about():
-    pass
+    # Title of pop-up window followed by text within the window itself
+    showinfo("Info about this program", "A simple program meant to help put multiple concepts together for learning.")
 
+# Closes out window
 def quit():
-    pass
+    window.destroy()
 
 
 window = Tk()
@@ -97,6 +137,23 @@ menu_bar = Menu(window)
 window.config(menu=menu_bar)
 
 file_menu = Menu(menu_bar, tearoff=0)
-menu_bar.add_cascade()
+menu_bar.add_cascade(label='File', menu=file_menu)
+file_menu.add_command(label='New', command=new_file)
+file_menu.add_command(label='Open', command=open_file)
+file_menu.add_command(label='Save', command=save_file)
+file_menu.add_separator()
+file_menu.add_command(label='Exit', command=quit)
+
+# Second dropdown menu
+edit_menu = Menu(menu_bar, tearoff=0)
+menu_bar.add_cascade(label="Edit", menu=edit_menu)
+edit_menu.add_command(label='Cut', command=cut)
+edit_menu.add_command(label="Copy", command=copy)
+edit_menu.add_command(label="Paste", command=paste)
+
+# Third dropdown menu
+help_menu = Menu(menu_bar, tearoff=0)
+menu_bar.add_cascade(label="Help", menu=help_menu)
+help_menu.add_command(label="About", command=about)
 
 window.mainloop()
